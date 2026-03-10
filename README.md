@@ -29,11 +29,45 @@ The Poisson distribution is the discrete probability distribution of the number 
 ![image](https://user-images.githubusercontent.com/103921593/230282876-f4a5afbf-cac1-4648-a1b0-c78840638a8e.png)
 
 # Program :
+```
 
- 
+
+import numpy as np
+import math
+import scipy.stats
+data = [int(i) for i in input("Enter the data with space: ").split()]
+length = len(data)
+M = max(data)
+x = []
+freq = []
+for i in range(M+1):
+    freq.append(data.count(i))
+    x.append(i)
+sum_freq = np.sum(freq)
+p = [freq[i]/sum_freq for i in range(M+1)]
+mean = np.inner(x, p)
+print("X    P(X=x)    Obser.freq   Expec.freq  xi")
+print()
+chi = 0
+for i in x:
+    p_i = (math.exp(-mean) * (mean**i)) / math.factorial(i)
+    e = p_i * sum_freq
+    xi = ((freq[i] - e)**2) / e
+    chi += xi
+    print(f"{i}   {p_i:.3f}       {freq[i]}        {e:.2f}        {xi:.3f}")
+print()
+print("Calculated chi square value:", f"{chi:.4f}")
+table_chi2 = scipy.stats.chi2.ppf(1 - 0.01, df=M)
+print(f"Table value of chi square at 1% level is {table_chi2:.4f}")
+if chi < table_chi2:
+    print("✔ The data can be fitted in Poisson Distribution at 1% LOS")
+else:
+    print("✘ The data cannot be fitted in Poisson Distribution at 1% LOS")
+```
 
 # Output : 
 
+<img width="728" height="405" alt="prob exp 2" src="https://github.com/user-attachments/assets/8e084173-62ac-490a-8217-b79d5fac16dd" />
 
 
 # Results
